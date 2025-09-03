@@ -27,12 +27,13 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-    public void OpenConfrimpanel(string message)
+    public void OpenConfirmpanel(string message, ConfirmPanelController.OnConfirmButtonClicked onConfirmButtonClicked)
     {
         if ( _canvas != null)
         {
             var confirmPanelObject = Instantiate(confirmPanel, _canvas.transform);
-            confirmPanelObject.GetComponent<ConfirmPanelController>().Show(message);
+            confirmPanelObject.GetComponent<ConfirmPanelController>()
+                .Show(message, onConfirmButtonClicked);
         }
     }
 
