@@ -1,27 +1,26 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 
 [RequireComponent(typeof(CanvasGroup))]
-
 public class PanelController : MonoBehaviour
 {
-    // ÆË¾÷Ã¢ RectTransform
+    // íŒì—…ì°½ RectTransform
     [SerializeField] private RectTransform panelRectTransform;
-
-    // ¸â¹öº¯¼ö¿Í ÇÔ¼ö ³»ÀÇ º¯¼ö¸¦ ±¸ºĞÇÏ±â À§ÇÑ ¾ğ´õ¹Ù _ µû·Î ±â´ÉÀº x
+    
     private CanvasGroup _backgroundCanvasGroup;
-
-    // Pamel ÀÌ Hide µÉ ¶§ ÇØ¾ß ÇÒ µ¿ÀÛ
-
+    
+    // Panelì´ Hide ë  ë•Œ í•´ì•¼ í•  ë™ì‘
     public delegate void PanelControllerHideDelegate();
-
 
     private void Awake()
     {
-        _backgroundCanvasGroup = GetComponent<CanvasGroup>();
+        _backgroundCanvasGroup  = GetComponent<CanvasGroup>();
     }
 
-    // Panel Ç¥½Ã
+    /// <summary>
+    /// Panel í‘œì‹œ
+    /// </summary>
     public void Show()
     {
         _backgroundCanvasGroup.alpha = 0;
@@ -30,7 +29,10 @@ public class PanelController : MonoBehaviour
         _backgroundCanvasGroup.DOFade(1, 0.3f).SetEase(Ease.Linear);
         panelRectTransform.DOScale(1, 0.3f).SetEase(Ease.OutBack);
     }
-    // Panel ¼û±â±â
+
+    /// <summary>
+    /// Panel ìˆ¨ê¸°ê¸°
+    /// </summary>
     public void Hide(PanelControllerHideDelegate hideDelegate = null)
     {
         _backgroundCanvasGroup.alpha = 1;
@@ -39,10 +41,9 @@ public class PanelController : MonoBehaviour
         _backgroundCanvasGroup.DOFade(0, 0.3f).SetEase(Ease.Linear);
         panelRectTransform.DOScale(0, 0.3f).SetEase(Ease.InBack)
             .OnComplete(() =>
-        {
-            hideDelegate?.Invoke();
-            Destroy(gameObject);
-        });
+            {
+                hideDelegate?.Invoke();
+                Destroy(gameObject);
+            });
     }
-
 }

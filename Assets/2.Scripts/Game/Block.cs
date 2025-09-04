@@ -12,13 +12,13 @@ public class Block : MonoBehaviour
     public delegate void OnBlockClicked(int index);
     private OnBlockClicked _onBlockClicked;
 
-    // ¸¶Ä¿ Å¸ÀÔ
+    // ë§ˆì»¤ íƒ€ì…
     public enum MarkerType { None, O, X }
-
+    
     // Block Index
     private int _blockIndex;
-
-    // BlockÀÇ »ö»ó º¯°æÀ» À§ÇÑ BlockÀÇ Sprite Renderer
+    
+    // Blockì˜ ìƒ‰ìƒ ë³€ê²½ì„ ìœ„í•œ Blockì˜ Sprite Renderer
     private SpriteRenderer _spriteRenderer;
     private Color _defaultBlockColor;
 
@@ -28,7 +28,7 @@ public class Block : MonoBehaviour
         _defaultBlockColor = _spriteRenderer.color;
     }
 
-    // 1. ÃÊ±âÈ­
+    // 1. ì´ˆê¸°í™”
     public void InitMarker(int blockIndex, OnBlockClicked onBlockClicked)
     {
         _blockIndex = blockIndex;
@@ -36,8 +36,8 @@ public class Block : MonoBehaviour
         SetBlockColor(_defaultBlockColor);
         _onBlockClicked = onBlockClicked;
     }
-
-    // 2. ¸¶Ä¿ ¼³Á¤
+    
+    // 2. ë§ˆì»¤ ì„¤ì •
     public void SetMarker(MarkerType markerType)
     {
         switch (markerType)
@@ -53,23 +53,23 @@ public class Block : MonoBehaviour
                 break;
         }
     }
-
-    // 3. Block ¹è°æ »ö»ó º¯°æ
+    
+    // 3. Block ë°°ê²½ ìƒ‰ìƒ ë³€ê²½
     public void SetBlockColor(Color color)
     {
         _spriteRenderer.color = color;
     }
-
-    // 4. ºí·° ÅÍÄ¡ Ã³¸®
+    
+    // 4. ë¸”ëŸ­ í„°ì¹˜ ì²˜ë¦¬
     private void OnMouseUpAsButton()
     {
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
-
+        
         Debug.Log("Selected Block: " + _blockIndex);
-
+        
         _onBlockClicked?.Invoke(_blockIndex);
     }
 }

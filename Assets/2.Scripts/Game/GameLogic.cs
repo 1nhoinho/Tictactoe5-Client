@@ -1,60 +1,69 @@
-using System.Runtime.InteropServices.WindowsRuntime;
+
 using UnityEngine;
 
 public class GameLogic
 {
-    public BlockController blockController;  // BlockÀ» Ã³¸®ÇÒ °´Ã¼
+    public BlockController blockController;         // Blockì„ ì²˜ë¦¬í•  ê°ì²´
 
-    private Constants.PlayerType[,] _board; // º¸µåÀÇ »óÅÂ Á¤º¸
-
-    public BasePlayerState firstPlayerState;  // PlayerA
-    public BasePlayerState secondPlayerState; // PlayerB
-
+    private Constants.PlayerType[,] _board;         // ë³´ë“œì˜ ìƒíƒœ ì •ë³´
+    
+    public BasePlayerState firstPlayerState;        // Player A
+    public BasePlayerState secondPlayerState;       // Player B
 
     public enum GameResult { None, Win, Lose, Draw }
+    
+    private BasePlayerState _currentPlayerState;    // í˜„ì¬ í„´ì˜ Player
 
-    private BasePlayerState _currentPlayerState;  // ÇöÀç ÅÏÀÇ ÇÃ·¹ÀÌ¾î
-
-    public GameLogic(BlockController blockController, Constants.GameType gameType) 
+    public GameLogic(BlockController blockController, Constants.GameType gameType)
     {
         this.blockController = blockController;
-
-        // º¸µåÀÇ »óÅÂ Á¤º¸ ÃÊ±âÈ­
-        _board = new Constants.PlayerType[Constants.BlockColumnCount, Constants.BlockColumnCount];
-
-        // Game Type ÃÊ±âÈ­
+        
+        // ë³´ë“œì˜ ìƒíƒœ ì •ë³´ ì´ˆê¸°í™”
+        _board = 
+            new Constants.PlayerType[Constants.BlockColumnCount, Constants.BlockColumnCount];
+        
+        // Game Type ì´ˆê¸°í™”
         switch (gameType)
         {
             case Constants.GameType.SinglePlay:
+                firstPlayerState = new PlayerState(true);
+                secondPlayerState = new AIState();
+                // ê²Œì„ ì‹œì‘
+                SetState(firstPlayerState);
                 break;
             case Constants.GameType.DualPlay:
                 firstPlayerState = new PlayerState(true);
                 secondPlayerState = new PlayerState(false);
-
-                // °ÔÀÓ ½ÃÀÛ
+                // ê²Œì„ ì‹œì‘
                 SetState(firstPlayerState);
                 break;
             case Constants.GameType.MultiPlay:
                 break;
         }
-    }    
+    }
 
-    // ÅÏÀÌ ¹Ù²ğ ¶§ ±âÁ¸ ÁøÇà»óÅÂ¸¦ Exit ÇÏ°í ÀÌ¹ø ÅÏÀÇ »óÅÂ¸¦ ÇÒ´çÇÏ°í
-    // ÀÌ¹ø ÅÏÀÇ »óÅÂ¿¡ Enter È£Ãâ
+    public Constants.PlayerType[,] GetBoard()
+    {
+        return _board;
+    }
+
+    // í„´ì´ ë°”ë€” ë•Œ, ê¸°ì¡´ ì§„í–‰í•˜ë˜ ìƒíƒœë¥¼ Exit í•˜ê³ 
+    // ì´ë²ˆ í„´ì˜ ìƒíƒœë¥¼ _currentPlayerStateì— í• ë‹¹í•˜ê³ 
+    // ì´ë²ˆ í„´ì˜ ìƒíƒ±ì— Enter í˜¸ì¶œ
     public void SetState(BasePlayerState state)
     {
         _currentPlayerState?.OnExit(this);
         _currentPlayerState = state;
         _currentPlayerState?.OnEnter(this);
-
     }
-
-    // _board ¹è¿­¿¡ »õ·Î¿î Marker °ªÀ» ÇÒ´ç
-    public bool SetNewBoardValue(Constants.PlayerType playerType, int row, int col)
+    
+    // _board ë°°ì—´ì— ìƒˆë¡œìš´ Marker ê°’ì„ í• ë‹¹
+    public bool SetNewBoardValue(Constants.PlayerType playerType,
+        int row, int col)
     {
         if (_board[row, col] != Constants.PlayerType.None) return false;
 
-        if (playerType == Constants.PlayerType.PlayerA )
+        if (playerType == Constants.PlayerType.PlayerA)
         {
             _board[row, col] = playerType;
             blockController.PlaceMaker(Block.MarkerType.O, row, col);
@@ -68,86 +77,27 @@ public class GameLogic
         }
         return false;
     }
-
-    // Game Over Ã³¸®
+    
+    // Game Over ì²˜ë¦¬
     public void EndGame(GameResult gameResult)
     {
         SetState(null);
         firstPlayerState = null;
         secondPlayerState = null;
 
-        //TODO : À¯Àú¿¡°Ô Game Over ¤½½Ã
-        Debug.Log("Game Over");
+        // ìœ ì €ì—ê²Œ Game Over í‘œì‹œ
+        GameManager.Instance.OpenConfirmPanel("ê²Œì„ì˜¤ë²„", () =>
+        {
+            GameManager.Instance.ChangeToMainScene();
+        });
     }
-
-
-    // °ÔÀÓÀÇ °á°ú È®ÀÎ
+    
+    // ê²Œì„ì˜ ê²°ê³¼ í™•ì¸
     public GameResult CheckGameResult()
     {
-        if (CheckGameWin(Constants.PlayerType.PlayerA, _board))
-        {
-            return GameResult.Win;
-        }
-        if (CheckGameWin(Constants.PlayerType.PlayerB, _board))
-        { 
-            return GameResult.Lose;
-        }
-
+        if (TicTacToeAI.CheckGameWin(Constants.PlayerType.PlayerA, _board)) { return GameResult.Win; }
+        if (TicTacToeAI.CheckGameWin(Constants.PlayerType.PlayerB, _board)) { return GameResult.Lose; }
+        if (TicTacToeAI.CheckGameDraw(_board)) { return GameResult.Draw; }
         return GameResult.None;
     }
-
-    // ºñ°å´ÂÁö È®ÀÎ
-    public bool CheckGameDrow(Constants.PlayerType[,] board)
-    {
-        for (var row =0;  row < board.GetLength(0); row++)
-        {
-            for (var col = 0; col < board.GetLength(1); col++)
-            {
-                if (board[row, col] == Constants.PlayerType.None) return false;
-            }
-        }
-        return true;    
-    }
-
-    // °ÔÀÓ ½Â¸® È®ÀÎ
-    private bool CheckGameWin(Constants.PlayerType playerType, Constants.PlayerType[,] board)
-    {
-        for (var row = 0; row < _board.GetLength(0); row++)
-        {
-            if (_board[row,0] == playerType &&
-                _board[row, 1] == playerType &&
-                _board[row, 2] == playerType)
-            {
-                return true;
-            }
-        }
-        // Row Ã¼Å© ÈÄ ÀÏÀÚ¸é TRue
-        for (var col = 0; col < _board.GetLength(1); col++)
-        {
-            if (_board[0, col] == playerType &&
-                _board[1, col] == playerType &&
-                _board[2, col] == playerType)
-            {
-                return true;
-            }
-        }
-
-        // ´ë°¢¼± ÀÏÀÚ¸é True
-        if (_board[0, 0] == playerType &&
-            _board[1, 1] == playerType &&
-            _board[2, 2] == playerType)
-        {
-            return true;
-        }
-
-        if (_board[0, 2] == playerType &&
-            _board[1, 1] == playerType &&
-            _board[2, 0] == playerType)
-            {
-                return true;
-            }
-        return false;
-        }
-    }
-
-
+}

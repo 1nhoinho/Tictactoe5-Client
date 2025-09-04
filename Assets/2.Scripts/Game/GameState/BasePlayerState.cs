@@ -2,18 +2,18 @@ using UnityEngine;
 
 public abstract class BasePlayerState
 {
-    public abstract void OnEnter(GameLogic gameLogic);   // »óÅÂ ½ÃÀÛ
-    public abstract void OnExit(GameLogic gameLogic);   // »óÅÂ Á¾·á 
-    public abstract void HandleMove(GameLogic gameLogic, int row, int col);   // ¸¶Ä¿ Ç¥½Ã
-    protected abstract void HandleNextTurn(GameLogic gameLogic);   // ÅÏ ÀüÈ¯
+    public abstract void OnEnter(GameLogic gameLogic);          // ìƒíƒœ ì‹œì‘
+    public abstract void OnExit(GameLogic gameLogic);           // ìƒíƒœ ì¢…ë£Œ
+    public abstract void HandleMove(GameLogic gameLogic, int row, int col); // ë§ˆì»¤ í‘œì‹œ
+    protected abstract void HandleNextTurn(GameLogic gameLogic);    // í„´ ì „í™˜
 
-
-    // °ÔÀÓ °á°ú Ã³¸®
-    protected void ProcessMove(GameLogic gameLogic, Constants.PlayerType playerType, int row, int col)
+    // ê²Œì„ ê²°ê³¼ ì²˜ë¦¬
+    protected void ProcessMove(GameLogic gameLogic, Constants.PlayerType playerType,
+        int row, int col)
     {
         if (gameLogic.SetNewBoardValue(playerType, row, col))
         {
-            // »õ·Ó°Ô ³õ¿©Áø Marker¸¦ ±â¹İÀ¸·Î °ÔÀÓÀÇ °á°ú¸¦ ÆÇ´Ü
+            // ìƒˆë¡­ê²Œ ë†“ì—¬ì§„ Markerë¥¼ ê¸°ë°˜ìœ¼ë¡œ ê²Œì„ì˜ ê²°ê³¼ë¥¼ íŒë‹¨
             var gameResult = gameLogic.CheckGameResult();
             if (gameResult == GameLogic.GameResult.None)
             {
@@ -24,6 +24,5 @@ public abstract class BasePlayerState
                 gameLogic.EndGame(gameResult);
             }
         }
-        
     }
 }

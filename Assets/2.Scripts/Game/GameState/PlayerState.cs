@@ -1,26 +1,33 @@
-using UnityEngine;
 
 public class PlayerState : BasePlayerState
 {
     private bool _isFirstPlayer;
     private Constants.PlayerType _playerType;
-
+    
     public PlayerState(bool isFirstPlayer)
     {
         _isFirstPlayer = isFirstPlayer;
-        _playerType = isFirstPlayer ? Constants.PlayerType.PlayerA : Constants.PlayerType.PlayerB;
+        _playerType = _isFirstPlayer ? 
+            Constants.PlayerType.PlayerA :  Constants.PlayerType.PlayerB;
     }
 
-    #region ÇÊ¼ö ¸Ş¼­µå
+    #region í•„ìˆ˜ ë©”ì„œë“œ
     public override void OnEnter(GameLogic gameLogic)
     {
-        // 1. First Player ÀÎÁö È®ÀÎÇØ¼­ °ÔÀÓ UI¿¡ ÇöÀç ÅÏ Ç¥½Ã
-        // TODO: Game ¾À¿¡ ÅÏ Ç¥½Ã UI ±¸Çö ÈÄ ÁøÇà ¿¹Á¤
-
-        // 2. Block Controller¿¡°Ô ÇØ¾ß ÇÒ ÀÏÀ» Àü´Ş
+        // 1. First Playerì¸ì§€ í™•ì¸í•´ì„œ ê²Œì„ UIì— í˜„ì¬ í„´ í‘œì‹œ
+        if (_isFirstPlayer)
+        {
+            GameManager.Instance.SetGameTurnPanel(GameUIController.GameTurnPanelType.ATurn);
+        }
+        else
+        {
+            GameManager.Instance.SetGameTurnPanel(GameUIController.GameTurnPanelType.BTurn);
+        }
+        
+        // 2. Block Controllerì—ê²Œ í•´ì•¼ í•  ì¼ì„ ì „ë‹¬
         gameLogic.blockController.OnBlockClickedDelegate = (row, col) =>
         {
-            // BlockÀÌ ÅÍÄ¡ µÉ ¶§±îÁö ±â´Ù·È´Ù°¡ ÅÍÄ¡ µÇ¸é Ã³¸®ÇÒ ÀÏ
+            // Blockì´ í„°ì¹˜ ë  ë•Œê¹Œì§€ ê¸°ë‹¤ë ¸ë‹¤ê°€ í„°ì¹˜ ë˜ë©´ ì²˜ë¦¬í•  ì¼
             HandleMove(gameLogic, row, col);
         };
     }
@@ -29,6 +36,7 @@ public class PlayerState : BasePlayerState
     {
         gameLogic.blockController.OnBlockClickedDelegate = null;
     }
+
     public override void HandleMove(GameLogic gameLogic, int row, int col)
     {
         ProcessMove(gameLogic, _playerType, row, col);
@@ -38,15 +46,12 @@ public class PlayerState : BasePlayerState
     {
         if (_isFirstPlayer)
         {
-            // TODO : °ÔÀÓ ·ÎÁ÷¿¡°Ô Second PlayerÀÇ »óÅÂ¸¦ È°¼ºÈ­ ÇÏ¶ó°í Àü´Ş
+            gameLogic.SetState(gameLogic.secondPlayerState);
         }
         else
         {
-            // TODO : °ÔÀÓ ·ÎÁ÷¿¡°Ô First PlayerÀÇ »óÅÂ¸¦ È°¼ºÈ­ ÇÏ¶ó°í Àü´Ş
+            gameLogic.SetState(gameLogic.firstPlayerState);
         }
     }
     #endregion
-
-
-
 }

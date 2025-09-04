@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 28
-  productGUID: 856dbf0734edbdf47951e1f2f6561a21
+  productGUID: b6119dcb289f91d419e14c4ae1048ead
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -12,8 +12,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: Inho
-  productName: Tictactoe5-Client
+  companyName: likelion
+  productName: tictactoe5-client
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -61,8 +61,8 @@ PlayerSettings:
   iosUseCustomAppBackgroundBehavior: 0
   allowedAutorotateToPortrait: 1
   allowedAutorotateToPortraitUpsideDown: 1
-  allowedAutorotateToLandscapeRight: 1
-  allowedAutorotateToLandscapeLeft: 1
+  allowedAutorotateToLandscapeRight: 0
+  allowedAutorotateToLandscapeLeft: 0
   useOSAutorotation: 1
   use32BitDisplayBuffer: 1
   preserveFramebufferAlpha: 0
@@ -163,7 +163,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.4
   androidMinAspectRatio: 1
   applicationIdentifier:
-    Android: com.Inho.Tictactoe5Client
+    Android: com.likelion.tictactoe5client
     Standalone: com.DefaultCompany.2D-URP
   buildNumber:
     Standalone: 0
@@ -272,6 +272,9 @@ PlayerSettings:
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
+  androidAppCategory: 3
+  useAndroidAppCategory: 1
+  androidAppCategoryOther: 
   AndroidEnableTango: 0
   androidEnableBanner: 1
   androidUseLowAccuracyLocation: 0
@@ -679,10 +682,10 @@ PlayerSettings:
     Kepler: DOTWEEN
     LinuxHeadlessSimulation: DOTWEEN
     Nintendo Switch: DOTWEEN
+    Nintendo Switch 2: DOTWEEN
     PS4: DOTWEEN
     PS5: DOTWEEN
     QNX: DOTWEEN
-    ReservedCFE: DOTWEEN
     Standalone: DOTWEEN
     VisionOS: DOTWEEN
     WebGL: DOTWEEN
@@ -710,14 +713,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: Tictactoe5-Client
+  metroPackageName: tictactoe5-client
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: Tictactoe5-Client
+  metroApplicationDescription: tictactoe5-client
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -788,11 +791,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: facb4df9-b3e6-4e6d-915a-47e484335432
+  cloudProjectId: 76d0740e-4337-41ac-9b16-3b8b1ca18689
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Tictactoe5-Client
-  organizationId: dlsgh212
+  projectName: tictactoe5-client
+  organizationId: gamedojang
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

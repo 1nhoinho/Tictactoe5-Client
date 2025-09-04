@@ -11,8 +11,8 @@ public abstract class Singleton<T> : MonoBehaviour where T : Component
         {
             if (_instance == null)
             {
-                _instance = FindObjectOfType<T>();
-                if (_instance == null) 
+                _instance = FindFirstObjectByType<T>();
+                if (_instance == null)
                 {
                     GameObject obj = new GameObject();
                     obj.name = typeof(T).Name;
@@ -23,14 +23,13 @@ public abstract class Singleton<T> : MonoBehaviour where T : Component
         }
     }
 
-    protected virtual void Awake()
+    private void Awake()
     {
         if (_instance == null)
         {
             _instance = this as T;
             DontDestroyOnLoad(gameObject);
-
-            // 씬 전환시 호출되는 액션 메서드 할당
+            // 
             SceneManager.sceneLoaded += OnSceneLoad;
         }
         else
