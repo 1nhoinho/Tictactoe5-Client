@@ -1,12 +1,11 @@
 using UnityEngine;
-using static ConfirmPanelController;
 
 public class GameUIController : MonoBehaviour
 {
-    public void OnClickBackbutton()
+    public void OnClickBackButton()
     {
-        GameManager.Instance.OpenConfirmpanel("게임 종료하기",
-              () =>
+        GameManager.Instance.OpenConfirmPanel("게임을 종료하시겠습니까?",
+            () =>
             {
                 GameManager.Instance.ChangeToMainScene();
             });

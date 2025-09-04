@@ -13,6 +13,13 @@ public class GameManager : Singleton<GameManager>
     // Panel을 띄우기 위한 Canvas 정보
     private Canvas _canvas;
 
+    // Game Logic
+    private GameLogic _gameLogic;
+
+
+
+
+
     // Main 에서 Game Scene 으로 전환시 호출될 메서드
     public void ChangeToGameScene(Constants.GameType gameType)
     {
@@ -27,7 +34,7 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-    public void OpenConfirmpanel(string message, ConfirmPanelController.OnConfirmButtonClicked onConfirmButtonClicked)
+    public void OpenConfirmPanel(string message, ConfirmPanelController.OnConfirmButtonClicked onConfirmButtonClicked)
     {
         if ( _canvas != null)
         {
@@ -41,5 +48,21 @@ public class GameManager : Singleton<GameManager>
     protected override void OnSceneLoad(Scene scene, LoadSceneMode mode)
     {
        _canvas = FindFirstObjectByType<Canvas>();
+
+        if (scene.name == "Game")
+        {
+            // Block 초기화
+            var blockController = FindFirstObjectByType<BlockController>();
+            blockController.InitBlocks();
+
+            //GameLogic 생성
+            if (_gameLogic != null)
+            {
+                // TODO : 기존 게임 로직을 소멸
+            }
+            
+            _gameLogic = new GameLogic(blockController, _gameType);
+            
+        }
     }
 }
