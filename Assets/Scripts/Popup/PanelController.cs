@@ -21,7 +21,7 @@ public class PanelController : MonoBehaviour
     /// <summary>
     /// Panel 표시
     /// </summary>
-    public void Show()
+    public virtual void Show()
     {
         _backgroundCanvasGroup.alpha = 0;
         panelRectTransform.localScale = Vector3.zero;
@@ -45,5 +45,10 @@ public class PanelController : MonoBehaviour
                 hideDelegate?.Invoke();
                 Destroy(gameObject);
             });
+    }
+
+    protected void Shake()
+    {
+        panelRectTransform.DOShakeAnchorPos(0.3f);
     }
 }

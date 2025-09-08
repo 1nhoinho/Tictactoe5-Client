@@ -6,9 +6,9 @@ public class AIState : BasePlayerState
     {
         // 턴 표시
         GameManager.Instance.SetGameTurnPanel(GameUIController.GameTurnPanelType.BTurn);
-
+        
+        // AI 처리
         var board = gameLogic.GetBoard();
-        // TODO: AI 연산
         var result = TicTacToeAI.GetBestMove(board);
         if (result.HasValue)
         {
@@ -18,7 +18,6 @@ public class AIState : BasePlayerState
         {
             gameLogic.EndGame(GameLogic.GameResult.Draw);
         }
-
     }
 
     public override void OnExit(GameLogic gameLogic)
