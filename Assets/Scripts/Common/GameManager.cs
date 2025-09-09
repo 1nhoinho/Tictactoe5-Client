@@ -7,16 +7,16 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private GameObject confirmPanel;           // 확인 패널
     [SerializeField] private GameObject signinPanel;            // 로그인 패널
     [SerializeField] private GameObject signupPanel;            // 회원가입 패널
-    
+
     // Main Scene에서 선택한 게임 타입
     private Constants.GameType _gameType;
-    
+
     // Panel을 띄우기 위한 Canvas 정보
     private Canvas _canvas;
-    
+
     // Game Logic
     private GameLogic _gameLogic;
-    
+
     // Game 씬의 UI를 담당하는 객체
     private GameUIController _gameUIController;
 
@@ -44,6 +44,8 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void ChangeToMainScene()
     {
+        _gameLogic?.Dispose();
+        _gameLogic = null;
         SceneManager.LoadScene("Main");
     }
 
@@ -51,7 +53,7 @@ public class GameManager : Singleton<GameManager>
     /// Confirm Panel을 띄우는 메서드
     /// </summary>
     /// <param name="message"></param>
-    public void OpenConfirmPanel(string message, 
+    public void OpenConfirmPanel(string message,
         ConfirmPanelController.OnConfirmButtonClicked onConfirmButtonClicked)
     {
         if (_canvas != null)
@@ -111,9 +113,16 @@ public class GameManager : Singleton<GameManager>
             {
                 _gameUIController.SetGameTurnPanel(GameUIController.GameTurnPanelType.None);
             }
-            
+
             // GameLogic 생성
+            if (_gameLogic != null) _gameLogic.Dispose();
             _gameLogic = new GameLogic(blockController, _gameType);
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        _gameLogic?.Dispose();
+        _gameLogic = null;
     }
 }

@@ -140,7 +140,7 @@ public static class TicTacToeAI
     public static void Test()
     {
         int i = 30;
-        
+
         Test();
 
         i = 20;
